@@ -24,9 +24,14 @@ router.get("/products/:page?/:category?/:sort?", (req, res, next) => {
   for (let key in req.query) {
     query[key] = req.query[key];
   }
-  const { page, category, sort } = query;
+  let { page, category, sort } = query;
+  //hacky temporary solution
+  category = `${category.charAt(0).toUpperCase()}${category
+    .split("")
+    .slice(1)
+    .join("")}`;
 
-  Product.find({ category: "tools" })
+  Product.find({ category })
     .limit(10)
     .exec((err, products) => {
       Product.count().exec((err, count) => {
