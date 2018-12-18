@@ -32,10 +32,18 @@ router.get("/products/:page?/:category?/:sort?", (req, res, next) => {
     .join("")}`;
 
   Product.find({ category })
+    .populate("product")
     .limit(10)
     .exec((err, products) => {
-      Product.count().exec((err, count) => {
+      Product.countDocuments().exec((err, count) => {
         if (err) return next(err);
+        if (sort) {
+          if (sort.toLowerCase() === "highest") {
+            products = products.sort((a, b) => b.price - a.price);
+          } else {
+            products = products.sort((a, b) => a.price - b.price);
+          }
+        }
         res.send(products);
       });
     });
