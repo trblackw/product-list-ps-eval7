@@ -2,10 +2,13 @@
   "name": "product-list-ps-eval7",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "test": "jest --watch",
+    "client": "cd client && npm start",
+    "start": "nodemon server/server.js",
+    "server": "nodemon server/server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -22,9 +25,11 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "faker": "^4.1.0",
+    "jest": "^23.6.0",
     "mongoose": "^5.4.0"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "morgan": "^1.9.1"
   }
 }
