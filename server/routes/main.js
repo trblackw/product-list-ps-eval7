@@ -15,7 +15,7 @@ router.get("/generate-fake-data", (req, res) => {
     product.name = faker.commerce.productName().toLowerCase();
     product.price = faker.commerce.price().toLowerCase();
     product.image =
-      "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png";
+      "https://picsum.photos/200/300/?random";
 
     product.save(err => {
       if (err) throw err;
@@ -43,7 +43,7 @@ router.get("/products/:page?/:category?/:sort?", (req, res, next) => {
       error: true,
       guidance: "Invalid page number--page must be 1 or greater"
     };
-    //  res.sendStatus(404);
+    res.status(404);
     return res.json(response);
   }
 
@@ -64,10 +64,10 @@ router.get("/products/:page?/:category?/:sort?", (req, res, next) => {
     .exec((err, products) => {
       Product.countDocuments().exec((err, count) => {
         if (err) {
-          //  res.sendStatus(404);
+          res.sendStatus(404);
           return next(err);
         }
-        //   res.sendStatus(200);
+        res.status(200);
         res.send(products);
       });
     });
@@ -79,7 +79,7 @@ router.get("/products/:product", (req, res) => {
   if (!product) {
     res.sendStatus(404);
   }
-  res.sendStatus(200);
+  res.status(200);
   res.send(product);
 });
 //Returns ALL the reviews, but limited to 40 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options `page` query to paginate.
