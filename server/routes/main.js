@@ -3,9 +3,6 @@ const faker = require("faker");
 const Product = require("../models/product");
 const Review = require("../models/review");
 
-router.get("/test", (req, res) => {
-  res.send("Connecting react and express!!!");
-});
 
 router.get("/generate-fake-data", (req, res) => {
   for (let i = 0; i < 90; i++) {
@@ -14,8 +11,7 @@ router.get("/generate-fake-data", (req, res) => {
     product.category = faker.commerce.department().toLowerCase();
     product.name = faker.commerce.productName().toLowerCase();
     product.price = faker.commerce.price().toLowerCase();
-    product.image =
-      "https://picsum.photos/200/300/?random";
+    product.image = "https://picsum.photos/200/300/?random";
 
     product.save(err => {
       if (err) throw err;
@@ -24,12 +20,6 @@ router.get("/generate-fake-data", (req, res) => {
   res.end();
 });
 
-// router.get("/products", (req, res, next) => {
-//   Product.find({}).exec((err, products) => {
-//     if (err) return next(err);
-//     res.send(products);
-//   });
-// });
 
 router.get("/products/:page?/:category?/:sort?", (req, res, next) => {
   const query = {};
@@ -46,29 +36,30 @@ router.get("/products/:page?/:category?/:sort?", (req, res, next) => {
     res.status(404);
     return res.json(response);
   }
-
+  //note that sorting can be done by prepending '-' or '+' to property (i.e. sort('-price'))
   if (sort) {
     if (sort === "highest") {
-      sort = "descending";
+      sort = -1;
     } else if (sort === "lowest") {
-      sort = "ascending";
+      sort = 1;
     }
   }
 
-  //just category
+  //find a given product by category, limiting results to 10 pages and sorting price by highest or lowest
   Product.where({ category: { $regex: new RegExp(category), $options: "i" } })
     .populate("product")
     .limit(10)
     .skip(10 * Number(page - 1))
     .sort({ price: sort })
     .exec((err, products) => {
-      Product.countDocuments().exec((err, count) => {
+      //finds each distinct category in products database
+      Product.find().distinct("category", (err, categories) => {
         if (err) {
           res.sendStatus(404);
           return next(err);
         }
         res.status(200);
-        res.send(products);
+        res.send([products, categories]);
       });
     });
 });
