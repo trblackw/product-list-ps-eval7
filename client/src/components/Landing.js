@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useInputValue } from "../hooks/useInputValue";
 import { useToggle } from "../hooks/useToggle";
+import { Redirect } from "react-router-dom";
 import Nav from "./Nav";
 import Product from "./Product";
 import { LandingContainer } from "../styled_elements/layout";
@@ -13,38 +14,46 @@ import { fetchProducts } from "../actions/index";
 import { bindActionCreators } from "redux";
 import { Pages } from "../styled_elements/layout";
 
-const generatePages = products => {
-  let pages;
-  for (let i = 0; i < products.length; i += 10) {
-    pages += i;
-  }
-  return pages;
-};
-
-const Landing = ({ fetchProducts, products, categories, page }) => {
+const Landing = ({ fetchProducts, products, total, pages }) => {
   const [open, toggle] = useToggle(false);
+  const [activePage, setActivePage] = useState(1);
 
-  useEffect(() => {
-    fetchProducts(page);
-  }, []);
-   console.log(products)
+  useEffect(
+    () => {
+      fetchProducts(activePage);
+    },
+    [activePage]
+  );
+
+  const handlePageClick = page => {
+    setActivePage(page);
+  };
+
+  const generatePages = () => {
+    let pageLinks = [];
+    for (let i = 1; i <= 10; i++) {
+      pageLinks.push(
+        <li key={i}>
+          <button
+            onClick={() => handlePageClick(i)}
+            className={i === activePage ? "active" : "page"}
+          >
+            Page {i}
+          </button>
+        </li>
+      );
+    }
+    return pageLinks;
+  };
+  const pageCrumbs = generatePages();
   return (
     <>
       <Nav />
-      {open && <Filters categories={categories} />}
-      {/* <Pages>
-        {pages.map((page, i) => (
-          <li key={page[i].id}>
-            <button
-              onClick={() => this.changePage(i)}
-              className={i === activePage ? "active" : "page"}
-            >
-              Page {i + 1}
-            </button>
-          </li>
-        ))}
-      </Pages> */}
+      {open && <Filters />}
       <LandingContainer>
+        <div>
+          <Pages>{pageCrumbs}</Pages>
+        </div>
         <Button
           variant="outlined"
           color="secondary"
@@ -72,8 +81,8 @@ const Landing = ({ fetchProducts, products, categories, page }) => {
 
 const mapStateToProps = state => ({
   products: state.productsReducer.products,
-  categories: state.productsReducer.categories,
-  page: state.productsReducer.page
+  total: state.productsReducer.total,
+  pages: state.productsReducer.pages
 });
 
 const mapDispatchToProps = dispatch =>
