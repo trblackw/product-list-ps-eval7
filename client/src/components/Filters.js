@@ -9,8 +9,11 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import { connect } from "react-redux";
+import { applyFilters } from "../actions/index";
+import { bindActionCreators } from "redux";
 
-const Filters = ({ categories, products }) => {
+const Filters = ({ categories }) => {
   const [checked, setChecked] = useState([""]);
   const [price, setPrice] = useState(0);
 
@@ -50,9 +53,7 @@ const Filters = ({ categories, products }) => {
           </ListItem>
         ))}
       </List>
-      <FormControl
-        style={{ width: "20%", margin: '2.1em 0 0 0' }}
-      >
+      <FormControl style={{ width: "20%", margin: "2.1em 0 0 0" }}>
         <InputLabel htmlFor="price">Price</InputLabel>
         <Select value={price} onChange={handlePrice}>
           <MenuItem>
@@ -66,4 +67,8 @@ const Filters = ({ categories, products }) => {
   );
 };
 
-export default Filters;
+const mapStateToProps = state => ({
+  categories: state.productsReducer.categories
+});
+
+export default connect(mapStateToProps)(Filters);
