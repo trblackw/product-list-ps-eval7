@@ -1,9 +1,8 @@
 import { combineReducers } from "redux";
-
-const placeholder = () => "hello";
+import { productsReducer } from "./reducer/index";
 
 const rootReducer = combineReducers({
-  placeholder
+  productsReducer
 });
 
 export default rootReducer;
