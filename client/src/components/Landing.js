@@ -11,19 +11,39 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { fetchProducts } from "../actions/index";
 import { bindActionCreators } from "redux";
+import { Pages } from "../styled_elements/layout";
 
-const Landing = ({ fetchProducts, products, categories }) => {
+const generatePages = products => {
+  let pages;
+  for (let i = 0; i < products.length; i += 10) {
+    pages += i;
+  }
+  return pages;
+};
+
+const Landing = ({ fetchProducts, products, categories, page }) => {
   const [open, toggle] = useToggle(false);
-  //   const [page, setPage] = useState(1);
-  //   const [sort, setSort] = useState("");
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(page);
   }, []);
+   console.log(products)
   return (
     <>
       <Nav />
       {open && <Filters categories={categories} />}
+      {/* <Pages>
+        {pages.map((page, i) => (
+          <li key={page[i].id}>
+            <button
+              onClick={() => this.changePage(i)}
+              className={i === activePage ? "active" : "page"}
+            >
+              Page {i + 1}
+            </button>
+          </li>
+        ))}
+      </Pages> */}
       <LandingContainer>
         <Button
           variant="outlined"
@@ -52,7 +72,8 @@ const Landing = ({ fetchProducts, products, categories }) => {
 
 const mapStateToProps = state => ({
   products: state.productsReducer.products,
-  categories: state.productsReducer.categories
+  categories: state.productsReducer.categories,
+  page: state.productsReducer.page
 });
 
 const mapDispatchToProps = dispatch =>
