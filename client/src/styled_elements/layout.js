@@ -55,3 +55,36 @@ export const LandingContainer = styled("div")`
   background-size: cover;
   background-position: absolute;
 `;
+
+export const Pages = styled("ul")`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: auto;
+  list-style: none;
+  padding: 1em;
+  margin: 0;
+  button {
+    margin: 0 0.4em;
+  }
+  button.active {
+    border: 1px solid hsl(0, 69%, 48%);
+    color: whitesmoke;
+    background: hsl(0, 69%, 48%);
+    border-radius: 3px;
+    padding: 0.4em;
+  }
+  button.page {
+    border-radius: 3px;
+    border: 1px solid hsl(0, 69%, 48%);
+    color: hsl(0, 69%, 48%);
+    background: transparent;
+    padding: 0.4em;
+    &:hover {
+      border: none;
+      color: whitesmoke;
+      background: hsl(0, 53%, 58%);
+      cursor: pointer;
+    }
+  }
+`;
