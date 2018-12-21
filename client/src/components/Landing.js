@@ -8,42 +8,32 @@ import Grid from "@material-ui/core/Grid";
 import Filters from "./Filters";
 import Button from "@material-ui/core/Button";
 // import ReactPaginate from "react-paginate";
+import { connect } from "react-redux";
+import { fetchProducts } from "../actions/index";
+import { bindActionCreators } from "redux";
 
-const Landing = () => {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+const Landing = ({ fetchProducts, products, categories }) => {
   const [open, toggle] = useToggle(false);
-  const [page, setPage] = useState(1);
-  const [category, setCategory] = useState("");
-  const [sort, setSort] = useState("");
+  //   const [page, setPage] = useState(1);
+  //   const [sort, setSort] = useState("");
 
   useEffect(() => {
-    callAPI().then(([products, categories]) => {
-      setProducts(products);
-      setCategories(categories);
-    });
+    fetchProducts();
   }, []);
-
-  const callAPI = async () => {
-    try {
-      const res = await fetch(`/products/${page}`);
-      const body = await res.json();
-      if (res.status !== 200) throw Error(body.message);
-      return body;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  console.log(categories);
   return (
     <>
       <Nav />
       {open && <Filters categories={categories} />}
       <LandingContainer>
-        <Button variant="outlined" color="secondary" onClick={toggle}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={toggle}
+          style={{ marginBottom: "1em" }}
+        >
           Refine search
         </Button>
-        <Grid container={true} spacing={35} xs zeroMinWidth>
+        <Grid container={true} spacing={32} zeroMinWidth>
           {products &&
             products.map(({ _id, category, name, price, image }) => (
               <Product
@@ -60,4 +50,15 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+const mapStateToProps = state => ({
+  products: state.productsReducer.products,
+  categories: state.productsReducer.categories
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ fetchProducts }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Landing);

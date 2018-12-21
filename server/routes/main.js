@@ -91,6 +91,8 @@ router.post("/:product/reviews", (req, res) => {});
 //Deletes a product by id
 router.delete("/products/:product", (req, res) => {});
 //Deletes a review by id
-router.delete("/reviews/:review", (req, res) => {});
+router.delete("/reviews/:review", (req, res) => {
+   
+});
 
 module.exports = router;
