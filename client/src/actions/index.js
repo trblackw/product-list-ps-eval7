@@ -22,6 +22,10 @@ export const fetchProducts = (page = 1) => {
   };
 };
 
+export const fetchSingleProduct = (id) => {
+   
+}
+
 export const applyFilters = () => {
   console.log("poop");
   // return async dispatch => {
