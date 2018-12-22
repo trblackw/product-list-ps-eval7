@@ -59,52 +59,6 @@ router.get("/products/:page", (req, res, next) => {
   });
 });
 
-// router.get("/products/:page?/:category?/:sort?", (req, res, next) => {
-//   const query = {};
-//   for (let key in req.query) {
-//     query[key] = req.query[key];
-//   }
-//   let { page, category, sort } = query;
-
-//   if (Number(page) <= 0) {
-//     const response = {
-//       error: true,
-//       guidance: "Invalid page number--page must be 1 or greater"
-//     };
-//     res.status(404);
-//     return res.json(response);
-//   }
-//   //note that sorting can be done by prepending '-' or '+' to property (i.e. sort('-price'))
-//   if (sort) {
-//     if (sort === "highest") {
-//       sort = -1;
-//     } else if (sort === "lowest") {
-//       sort = 1;
-//     }
-//   }
-
-//   //find a given product by category, limiting results to 10 pages and sorting price by highest or lowest
-//   Product.where({ category: { $regex: new RegExp(category), $options: "i" } })
-//     .populate("product")
-//     .limit(10)
-//     .sort({ price: sort })
-//     .skip(Number(page) * (10 - 1))
-//     .exec((err, products) => {
-//       //finds each distinct category in products database
-//       //needs to be extracted out of this call
-//       Product.find().distinct("category", (err, categories) => {
-//         if (err) {
-//           res.sendStatus(404);
-//           return next(err);
-//         }
-//         Product.countDocuments({}, (err, count) => {
-//           res.status(200);
-//           res.send([products, categories, count]);
-//         });
-//       });
-//     });
-// });
-
 //Returns a specific product by it's id
 router.get("/products/:product", (req, res) => {
   const id = request.params.product;
