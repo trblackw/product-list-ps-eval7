@@ -8,35 +8,38 @@ import Avatar from "@material-ui/core/Avatar";
 import PageviewIcon from "@material-ui/icons/Pageview";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
+import { Link } from "react-router-dom";
 
-const Product = ({ category, name, price, image }) => (
+const Product = ({ category, name, price, id }) => (
   <ProductContainer>
-    <Card>
-      <Typography variant="h6">{name}</Typography>
-      <Chip
-        avatar={
-          <Avatar>
-            <PageviewIcon />
-          </Avatar>
-        }
-        label={category}
-      />
-      <CardActionArea>
-        <CardMedia
-          image="https://picsum.photos/200/?random"
-          title="product image"
+    <Link to={`/products/${id}`}>
+      <Card>
+        <Typography variant="h6">{name}</Typography>
+        <Chip
+          avatar={
+            <Avatar>
+              <PageviewIcon />
+            </Avatar>
+          }
+          label={category}
         />
-      </CardActionArea>
-      <img src="https://picsum.photos/200/?random" alt="product" />
-      <Typography variant="subtitle2">${price}</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        style={{ margin: "1em auto" }}
-      >
-        Add to cart
-      </Button>
-    </Card>
+        <CardActionArea>
+          <CardMedia
+            image="https://picsum.photos/200/?random"
+            title="product image"
+          />
+        </CardActionArea>
+        <img src="https://picsum.photos/200/?random" alt="product" />
+        <Typography variant="subtitle2">${price}</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ margin: "1em auto" }}
+        >
+          Add to cart
+        </Button>
+      </Card>
+    </Link>
   </ProductContainer>
 );
 
