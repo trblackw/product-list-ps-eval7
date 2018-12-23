@@ -18,7 +18,14 @@ export const ProductContainer = styled("div")`
     cursor: pointer;
   }
 
- img {
+  img {
     margin: 1em auto;
- }
+  }
+`;
+
+export const SingleProductContainer = styled("div")`
+  background: dodgerblue;
+  margin: 2em auto;
+  padding: 1.5em;
+  font-size: 1.5em;
 `;
