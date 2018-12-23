@@ -32,7 +32,7 @@ router.get("/products/:page", (req, res, next) => {
   };
 
   if (Number(page) <= 0 || Number(page) > totalPages) {
-    return res.status(404);
+    return res.sendStatus(404);
   }
   Product.paginate({}, options, (err, products) => {
     Product.find().distinct("category", (err, categories) => {
@@ -60,14 +60,16 @@ router.get("/products/:page", (req, res, next) => {
 });
 
 //Returns a specific product by it's id
-router.get("/products/:product", (req, res) => {
-  const id = request.params.product;
-  const product = Product.findById(id).exec();
-  if (!product) {
-    res.sendStatus(404);
-  }
-  res.status(200);
-  res.send(product);
+router.get("/products/product/:id", (req, res, next) => {
+  const { id } = req.params;
+  Product.findById(id).exec((err, product) => {
+    if (err) {
+      res.status(404);
+      return next(err);
+    }
+    res.status(200);
+    res.send(product);
+  });
 });
 //Returns ALL the reviews, but limited to 40 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options `page` query to paginate.
 router.get("/reviews", (req, res) => {});
