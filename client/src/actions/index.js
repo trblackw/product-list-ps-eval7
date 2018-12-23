@@ -1,5 +1,6 @@
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const CHANGE_PAGE = "CHANGE_PAGE";
+export const FETCH_SINGLE_PRODUCT = "FETCH_SINGLE_PRODUCT";
 
 export const fetchProducts = (page = 1) => {
   return async dispatch => {
@@ -22,9 +23,23 @@ export const fetchProducts = (page = 1) => {
   };
 };
 
-export const fetchSingleProduct = (id) => {
-   
-}
+export const fetchSingleProduct = id => {
+  return async dispatch => {
+    try {
+      const res = await fetch(`/products/product/${id}`);
+      const product = await res.json();
+
+      if (product) {
+        return dispatch({
+          type: FETCH_SINGLE_PRODUCT,
+          product
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 
 export const applyFilters = () => {
   console.log("poop");
