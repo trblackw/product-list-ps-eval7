@@ -44,7 +44,6 @@ const Landing = ({ fetchProducts, products, total, pages }) => {
   const pageCrumbs = generatePages();
   return (
     <>
-      <Nav />
       {open && <Filters />}
       <LandingContainer>
         <div>
