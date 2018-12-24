@@ -18,6 +18,25 @@ router.get("/generate-fake-data", (req, res) => {
   }
   res.end();
 });
+router.get("/generate-fake-reviews", (req, res, next) => {
+  Product.find({}, (err, products) => {
+    if (err) return next(err);
+    products.forEach(product => {
+      const review = new Review();
+      review.username = faker.internet.userName();
+      review.title = faker.random.words();
+      review.body = faker.lorem.paragraph();
+      review.avatar = faker.image.avatar();
+      review.product = product;
+      review.save();
+      product.reviews.push(review);
+      product.save(err => {
+        if (err) throw err;
+      });
+    });
+    res.end();
+  });
+});
 
 router.get("/products/:page", (req, res, next) => {
   const { category, price } = req.query;
@@ -53,6 +72,7 @@ router.get("/products/:page", (req, res, next) => {
           }
         );
       } else {
+        console.log(products);
         res.send([products, categories]);
       }
     });
