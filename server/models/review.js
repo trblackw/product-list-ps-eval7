@@ -5,18 +5,24 @@ const Product = require("./product");
 
 const ReviewSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true
     },
-    review: {
+    title: {
+      type: String,
+      required: true
+    },
+    body: {
       type: String,
       required: true
     },
     product: {
-      type: Object,
+      type: Schema.Types.ObjectId,
       required: true,
-      ref: "product"
+      ref: "product",
+      min: 0,
+      max: 5
     }
   },
   { timestamps: true }
