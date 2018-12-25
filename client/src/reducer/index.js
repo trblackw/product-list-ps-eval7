@@ -1,8 +1,12 @@
-import { FETCH_PRODUCTS, FETCH_SINGLE_PRODUCT } from "../actions/index";
+import {
+  FETCH_PRODUCTS,
+  FETCH_SINGLE_PRODUCT,
+  FETCH_REVIEWS
+} from "../actions/index";
 
 export const productsReducer = (
   state = {},
-  { type, products, categories, total, pages, product }
+  { type, products, categories, total, pages, product, reviews }
 ) => {
   switch (type) {
     case FETCH_PRODUCTS:
@@ -17,6 +21,11 @@ export const productsReducer = (
       return {
         ...state,
         product
+      };
+    case FETCH_REVIEWS:
+      return {
+        ...state,
+        reviews
       };
     default:
       return state;
