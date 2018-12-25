@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useToggle } from "../hooks/useToggle";
 import Nav from "./Nav";
-import { LandingContainer } from "../styled_elements/layout";
+import { LandingContainer, FlexContainer, Button } from "../styled_elements/layout";
 import Filters from "./Filters";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { fetchProducts } from "../actions/index";
 import { bindActionCreators } from "redux";
@@ -49,14 +49,15 @@ const Landing = ({ fetchProducts, products, total, pages }) => {
         <div>
           <Pages>{pageCrumbs}</Pages>
         </div>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={toggle}
-          style={{ marginBottom: "1em" }}
-        >
-          Refine search
-        </Button>
+        <FlexContainer>
+          <Button variant="outlined" color="secondary" onClick={toggle}>
+            Refine search
+          </Button>
+              <Button variant="outlined" color="default" href="/reviews">
+            View reviews
+          </Button>
+        </FlexContainer>
+
         <ProductList products={products} />
       </LandingContainer>
     </>
