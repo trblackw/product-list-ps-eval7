@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FilterContainer } from "../styled_elements/layout";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -13,9 +13,16 @@ import { connect } from "react-redux";
 import { applyFilters } from "../actions/index";
 import { bindActionCreators } from "redux";
 
-const Filters = ({ categories }) => {
-  const [checked, setChecked] = useState([""]);
+const Filters = ({ categories, products, applyFilters }) => {
+  const [checked, setChecked] = useState([]);
   const [price, setPrice] = useState(0);
+
+  useEffect(
+    () => {
+      applyFilters(checked, products);
+    },
+    [checked]
+  );
 
   const handleCategory = value => {
     const currentIndex = checked.indexOf(value);
@@ -26,7 +33,6 @@ const Filters = ({ categories }) => {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-
     setChecked(newChecked);
   };
 
@@ -68,7 +74,14 @@ const Filters = ({ categories }) => {
 };
 
 const mapStateToProps = state => ({
-  categories: state.productsReducer.categories
+  categories: state.productsReducer.categories,
+  products: state.productsReducer.products
 });
 
-export default connect(mapStateToProps)(Filters);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ applyFilters }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Filters);
