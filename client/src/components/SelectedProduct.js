@@ -5,7 +5,8 @@ import { bindActionCreators } from "redux";
 import Product from "./Product";
 import {
   ProductContainer,
-  SingleProductContainer
+  SingleProductContainer,
+  ReviewSection
 } from "../styled_elements/product";
 import Button from "@material-ui/core/Button";
 
@@ -30,6 +31,16 @@ const SelectedProduct = ({ match, fetchSingleProduct, product }) => {
           />
         )}
       </ProductContainer>
+      <ReviewSection>
+        {product &&
+          product.reviews.map(({ username, title, body }) => (
+            <div>
+              <h3>{title}</h3>
+              <small>{username}</small>
+              <p>{body}</p>
+            </div>
+          ))}
+      </ReviewSection>
     </SingleProductContainer>
   );
 };

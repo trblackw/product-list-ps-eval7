@@ -25,7 +25,18 @@ export const ProductContainer = styled("div")`
 
 export const SingleProductContainer = styled("div")`
   background: dodgerblue;
-  margin: 2em auto;
+  margin: 0 auto;
   padding: 1.5em;
   font-size: 1.5em;
+`;
+
+export const ReviewSection = styled("div")`
+  background: whitesmoke;
+  color: black;
+  margin: 1.5em auto;
+  padding: 1em;
+
+  small {
+    color: red;
+  }
 `;
