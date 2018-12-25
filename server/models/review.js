@@ -17,6 +17,10 @@ const ReviewSchema = new Schema(
       type: String,
       required: true
     },
+    avatar: {
+      type: String,
+      required: true
+    },
     product: {
       type: Schema.Types.ObjectId,
       required: true,

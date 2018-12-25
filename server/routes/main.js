@@ -10,7 +10,7 @@ router.get("/generate-fake-data", (req, res) => {
     product.category = faker.commerce.department().toLowerCase();
     product.name = faker.commerce.productName().toLowerCase();
     product.price = faker.commerce.price().toLowerCase();
-    product.image = "https://picsum.photos/200/200/?random";
+    product.image = faker.image.fashion();
 
     product.save(err => {
       if (err) throw err;
@@ -82,17 +82,36 @@ router.get("/products/:page", (req, res, next) => {
 //Returns a specific product by it's id
 router.get("/products/product/:id", (req, res, next) => {
   const { id } = req.params;
-  Product.findById(id).exec((err, product) => {
-    if (err) {
-      res.status(404);
-      return next(err);
-    }
-    res.status(200);
-    res.send(product);
-  });
+  Product.findById(id)
+    .populate("reviews")
+    .exec((err, product) => {
+      if (err) {
+        res.status(404);
+        return next(err);
+      }
+      res.status(200);
+      res.send(product);
+    });
 });
 //Returns ALL the reviews, but limited to 40 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options `page` query to paginate.
-router.get("/reviews", (req, res) => {});
+router.get("/reviews/:page", (req, res, next) => {
+  const { page } = req.params;
+  const totalPages = 50;
+  const limit = 40;
+  const options = {
+    page,
+    limit,
+    populate: "reviews"
+  };
+
+  if (Number(page) <= 0 || Number(page) > totalPages) {
+    return res.sendStatus(404);
+  }
+  Product.paginate({}, options, (err, { docs: products }) => {
+    if (err) return next(err);
+    res.send(products);
+  });
+});
 // Creates a new product in the database
 router.post("/products", (req, res) => {
   const { category, name, price } = req.body;
