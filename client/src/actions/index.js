@@ -2,6 +2,7 @@ export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const CHANGE_PAGE = "CHANGE_PAGE";
 export const FETCH_SINGLE_PRODUCT = "FETCH_SINGLE_PRODUCT";
 export const FETCH_REVIEWS = "FETCH_REVIEWS";
+export const APPLY_FILTERS = "APPLY_FILTERS";
 
 export const fetchProducts = (page = 1) => {
   return async dispatch => {
@@ -50,6 +51,30 @@ export const fetchReviews = (page = 1) => {
         type: FETCH_REVIEWS,
         reviews: reviews.flat()
       });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const applyFilters = filters => {
+  return async dispatch => {
+    try {
+      if (filters.length > 1) {
+        filters = filters.join("+");
+      } else {
+        filters = String(filters);
+      }
+      if (filters !== "") {
+        const res = await fetch(`/products/1/?category=${filters}`);
+        const [productList] = await res.json();
+        const { docs: filteredProducts } = productList;
+        return dispatch({
+          type: APPLY_FILTERS,
+          filters,
+          filteredProducts
+        });
+      }
     } catch (error) {
       console.error(error);
     }
