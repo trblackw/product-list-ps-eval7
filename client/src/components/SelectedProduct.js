@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchSingleProduct } from "../actions/index";
 import { bindActionCreators } from "redux";
@@ -45,8 +45,8 @@ const SelectedProduct = ({ match, fetchSingleProduct, product }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  product: state.productsReducer.product
+const mapStateToProps = ({ productsReducer }) => ({
+  product: productsReducer.product
 });
 
 const mapDispatchToProps = dispatch =>

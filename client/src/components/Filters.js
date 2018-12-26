@@ -73,9 +73,9 @@ const Filters = ({ categories, products, applyFilters }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  categories: state.productsReducer.categories,
-  products: state.productsReducer.products
+const mapStateToProps = ({ productsReducer }) => ({
+  categories: productsReducer.categories,
+  products: productsReducer.products
 });
 
 const mapDispatchToProps = dispatch =>

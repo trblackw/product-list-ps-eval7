@@ -45,8 +45,8 @@ const Reviews = ({ fetchReviews, reviews }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  reviews: state.productsReducer.reviews
+const mapStateToProps = ({ productsReducer }) => ({
+  reviews: productsReducer.reviews
 });
 
 const mapDispatchToProps = dispatch =>
