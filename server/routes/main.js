@@ -108,20 +108,23 @@ router.get("/reviews/:page", (req, res, next) => {
     return res.sendStatus(404);
   }
   Product.paginate({}, options, (err, { docs: products }) => {
-    if (err) return next(err);
+    if (err) {
+      res.status(404);
+      return next(err);
+    }
     res.send(products);
   });
 });
 // Creates a new product in the database
-router.post("/products", (req, res) => {
-  const { category, name, price } = req.body;
-  const product = Product.create({ category, name, price });
-
-  if (!product) {
-    res.sendStatus(404);
-  }
-  res.sendStatus(200);
-  res.send(product);
+router.post("/products", (req, res, next) => {
+  const { category, name, price, image } = req.body;
+  Product.create({ category, name, price, image }, (err, product) => {
+    if (err) {
+      res.status(404);
+      return next(err);
+    }
+    res.send(product);
+  });
 });
 // Creates a new review in the database by adding it to the correct product's reviews array
 router.post("/:product/reviews", (req, res) => {});
