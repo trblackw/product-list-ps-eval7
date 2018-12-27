@@ -29,8 +29,8 @@ export const FilterContainer = styled("div")`
 `;
 
 export const Button = styled.button`
-  background: lightslategray;
-  padding: 0 0.5em;
+  background: hsl(0, 71%, 51%);
+  padding: 0.5em;
   color: whitesmoke;
   width: auto;
   height: auto;
@@ -45,15 +45,23 @@ export const Button = styled.button`
   }
 `;
 
+export const FlexContainer = styled("div")`
+  display: flex;
+  flex-direction: row;
+  padding: 0.5em;
+  margin: 0 auto;
+  justify-content: center;
+  button {
+    margin: 0 0.5em 1em 0.5em;
+  }
+`;
+
 export const LandingContainer = styled("div")`
   margin: 0 auto;
   justify-content: center;
-  padding: 0.5em;
+  padding: 1em;
   text-align: center;
-  background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNdaDVALomUJWuHiTYXwIeGZHnjY8MqrmX1iIPsItb0jOlbiKL-g")
-    no-repeat;
-  background-size: cover;
-  background-position: absolute;
+  background: hsl(200, 29%, 55%);
 `;
 
 export const Pages = styled("ul")`

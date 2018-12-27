@@ -24,7 +24,7 @@ export const ProductContainer = styled("div")`
 `;
 
 export const SingleProductContainer = styled("div")`
-  background: dodgerblue;
+  background: hsl(200, 29%, 55%);
   margin: 0 auto;
   padding: 1.5em;
   font-size: 1.5em;
