@@ -68,11 +68,12 @@ router.get("/products/:page", (req, res, next) => {
               res.status(404);
               return next(err);
             }
+            res.status(200);
             res.send([categorizedProducts, categories]);
           }
         );
       } else {
-        console.log(products);
+        res.status(200);
         res.send([products, categories]);
       }
     });
@@ -80,8 +81,8 @@ router.get("/products/:page", (req, res, next) => {
 });
 
 //Returns a specific product by it's id
-router.get("/products/product/:id", (req, res, next) => {
-  const { id } = req.params;
+router.get("/products/product/:productId", (req, res, next) => {
+  const { productId } = req.params;
   Product.findById(id)
     .populate("reviews")
     .exec((err, product) => {
@@ -112,6 +113,7 @@ router.get("/reviews/:page", (req, res, next) => {
       res.status(404);
       return next(err);
     }
+    res.status(200);
     res.send(products);
   });
 });
@@ -123,14 +125,35 @@ router.post("/products", (req, res, next) => {
       res.status(404);
       return next(err);
     }
+    res.status(200);
     res.send(product);
   });
 });
 // Creates a new review in the database by adding it to the correct product's reviews array
-router.post("/:product/reviews", (req, res) => {});
+router.post("/:productId/reviews", (req, res) => {
+  const { productId } = req.params;
+});
 //Deletes a product by id
-router.delete("/products/:product", (req, res) => {});
+router.delete("/products/:productId", (req, res, next) => {
+  const { productId } = req.params;
+  if (!productId) {
+    res.status(404);
+    return next(err);
+  }
+  res.status(200);
+  Product.findByIdAndRemove(productId).exec();
+  res.end();
+});
 //Deletes a review by id
-router.delete("/reviews/:review", (req, res) => {});
+router.delete("/reviews/:reviewId", (req, res, next) => {
+  const { reviewId } = req.params;
+  if (!reviewId) {
+    res.status(404);
+    return next(err);
+  }
+  res.status(200);
+  Review.findByIdAndRemove(reviewId).exec();
+  res.end();
+});
 
 module.exports = router;
