@@ -97,6 +97,7 @@ router.get("/products/product/:productId", (req, res, next) => {
 //Returns ALL the reviews, but limited to 40 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options `page` query to paginate.
 router.get("/reviews/:page", (req, res, next) => {
   const { page } = req.params;
+  //no more than 50 pages
   const totalPages = 50;
   const limit = 40;
   const options = {
@@ -104,7 +105,7 @@ router.get("/reviews/:page", (req, res, next) => {
     limit,
     populate: "reviews"
   };
-
+  //validate page
   if (Number(page) <= 0 || Number(page) > totalPages) {
     return res.sendStatus(404);
   }
@@ -130,8 +131,25 @@ router.post("/products", (req, res, next) => {
   });
 });
 // Creates a new review in the database by adding it to the correct product's reviews array
-router.post("/:productId/reviews", (req, res) => {
+router.post("/:productId/reviews", (req, res, next) => {
   const { productId } = req.params;
+  const { category, name, price, image } = req.body;
+  //create review
+  Review.create({ category, name, price, image }, (err, review) => {
+    if (err) {
+      res.status(404);
+      return next(err);
+    }
+    //add review to specific product
+    Product.findById(productId, (err, product) => {
+      if (err) {
+        res.status(404);
+        return next(err);
+      }
+      res.status(200);
+      product.reviews.push(review);
+    });
+  });
 });
 //Deletes a product by id
 router.delete("/products/:productId", (req, res, next) => {
