@@ -10,15 +10,18 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
-import { applyFilters } from "../actions/index";
+import { applyFilters, fetchProducts } from "../actions/index";
 import { bindActionCreators } from "redux";
 
-const Filters = ({ categories, products, applyFilters }) => {
+const Filters = ({ categories, products, applyFilters, fetchProducts }) => {
   const [checked, setChecked] = useState([]);
   const [price, setPrice] = useState(0);
 
   useEffect(
     () => {
+      if (checked.length === 0) {
+        fetchProducts();
+      }
       applyFilters(checked, products);
     },
     [checked]
@@ -79,7 +82,7 @@ const mapStateToProps = ({ productsReducer }) => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ applyFilters }, dispatch);
+  bindActionCreators({ applyFilters, fetchProducts }, dispatch);
 
 export default connect(
   mapStateToProps,
