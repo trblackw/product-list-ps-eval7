@@ -83,7 +83,7 @@ router.get("/products/:page", (req, res, next) => {
 //Returns a specific product by it's id
 router.get("/products/product/:productId", (req, res, next) => {
   const { productId } = req.params;
-  Product.findById(id)
+  Product.findById(productId)
     .populate("reviews")
     .exec((err, product) => {
       if (err) {
