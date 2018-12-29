@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { FormContainer, Form } from "../styled_elements/form";
 import { useInputValue } from "../hooks/useInputValue";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-const AddProduct = () => {
+const AddProduct = ({ categories }) => {
   const category = useInputValue("");
   const name = useInputValue("");
   const price = useInputValue(0);
   const image = useInputValue("");
+
+  useEffect(
+    () => {
+      console.log(categories);
+    },
+    [categories]
+  );
 
   return (
     <FormContainer>
@@ -18,7 +25,14 @@ const AddProduct = () => {
           console.log({ category, name, price, image });
         }}
       >
-        <input type="text" name="category" {...category} />
+        <select {...category}>
+          {categories &&
+            categories.map(category => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+        </select>
         <input type="text" name="name" {...name} />
         <input type="number" name="price" {...price} />
         <input type="text" name="image" {...image} />
@@ -28,17 +42,15 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
-
-// const mapStateToProps = (state) => ({
-
-// })
+const mapStateToProps = ({ productsReducer }) => ({
+  categories: productsReducer.categories
+});
 
 // const mapDispatchToProps = {
 
 // }
 
-// export default connect(
-//    mapStateToProps
-//    // mapDispatchToProps
-//  )(AddProduct);
+export default connect(
+  mapStateToProps
+  // mapDispatchToProps
+)(AddProduct);
