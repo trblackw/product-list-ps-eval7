@@ -34,7 +34,7 @@ const SelectedProduct = ({ match, fetchSingleProduct, product }) => {
       <ReviewSection>
         {product &&
           product.reviews.map(({ username, title, body }) => (
-            <div>
+             <div key={title}>
               <h3>{title}</h3>
               <small>{username}</small>
               <p>{body}</p>
