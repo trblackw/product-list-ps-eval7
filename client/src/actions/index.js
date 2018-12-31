@@ -3,6 +3,7 @@ export const CHANGE_PAGE = "CHANGE_PAGE";
 export const FETCH_SINGLE_PRODUCT = "FETCH_SINGLE_PRODUCT";
 export const FETCH_REVIEWS = "FETCH_REVIEWS";
 export const APPLY_FILTERS = "APPLY_FILTERS";
+export const ADD_PRODUCT = "ADD_PRODUCT";
 
 export const fetchProducts = (page = 1) => {
   return async dispatch => {
@@ -78,5 +79,21 @@ export const applyFilters = filters => {
     } catch (error) {
       console.error(error);
     }
+  };
+};
+
+export const addProduct = product => {
+  const { category, name, price, image } = product;
+  return async dispatch => {
+    const res = await fetch("/products", {
+      method: "POST",
+      body: JSON.stringify({ category, name, price, image })
+    });
+    const { status } = await res.json();
+    console.log(status);
+    return dispatch({
+      type: ADD_PRODUCT,
+      status
+    });
   };
 };
