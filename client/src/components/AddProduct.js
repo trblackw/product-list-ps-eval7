@@ -3,9 +3,10 @@ import { FormContainer, Form } from "../styled_elements/form";
 import { useInputValue } from "../hooks/useInputValue";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { addProduct } from "../actions/index";
 
-const AddProduct = ({ categories }) => {
-  const category = useInputValue("");
+const AddProduct = ({ categories, addProduct }) => {
+  const category = useInputValue("Tools");
   const name = useInputValue("");
   const price = useInputValue(0);
   const image = useInputValue("");
@@ -16,16 +17,23 @@ const AddProduct = ({ categories }) => {
     },
     [categories]
   );
-
   return (
     <FormContainer>
       <Form
         onSubmit={e => {
           e.preventDefault();
-          console.log({ category, name, price, image });
+          addProduct({
+            category: category.value,
+            name: name.value,
+            price: price.value,
+            image: image.value
+          });
         }}
       >
-        <select {...category}>
+        <select>
+          <option selected value="Tools">
+            Tools
+          </option>
           {categories &&
             categories.map(category => (
               <option key={category} value={category}>
@@ -46,11 +54,10 @@ const mapStateToProps = ({ productsReducer }) => ({
   categories: productsReducer.categories
 });
 
-// const mapDispatchToProps = {
-
-// }
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ addProduct }, dispatch);
 
 export default connect(
-  mapStateToProps
-  // mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AddProduct);
