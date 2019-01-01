@@ -83,17 +83,20 @@ export const applyFilters = filters => {
 };
 
 export const addProduct = product => {
-  const { category, name, price, image } = product;
+  const settings = {
+    method: "POST",
+    body: JSON.stringify(product),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  };
   return async dispatch => {
-    const res = await fetch("/products", {
-      method: "POST",
-      body: JSON.stringify({ category, name, price, image })
-    });
-    const { status } = await res.json();
-    console.log(status);
+    const res = await fetch("/products", settings);
+    const addedProduct = await res.json();
     return dispatch({
       type: ADD_PRODUCT,
-      status
+      addedProduct
     });
   };
 };
